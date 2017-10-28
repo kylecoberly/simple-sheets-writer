@@ -17,9 +17,8 @@ function updateSurveyData(sheets, spreadsheetId, data, options){
     return new Promise(function(resolve, reject){
         sheets.values.batchUpdate({
             spreadsheetId,
-            ranges,
+            data,
             valueInputOption: options.valueInputOption || "USER_ENTERED",
-            data
         }, function(error, response){
             if (error){reject(error);}
             resolve(response);
