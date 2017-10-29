@@ -26,4 +26,4 @@ function updateSurveyData(sheets, spreadsheetId, data, options){
     });
 }
 
-module.exports = getSurveyData.bind(null, sheets);
+module.exports = updateSurveyData.bind(null, sheets);
