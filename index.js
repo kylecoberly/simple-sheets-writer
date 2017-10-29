@@ -15,10 +15,12 @@ var sheets = google.sheets({
 function updateSurveyData(sheets, spreadsheetId, data, options){
     options = options || {};
     return new Promise(function(resolve, reject){
-        sheets.batchUpdate({
+        sheets.values.batchUpdate({
             spreadsheetId,
-            data,
-            valueInputOption: options.valueInputOption || "USER_ENTERED",
+            resource: {
+                valueInputOption: options.valueInputOption || "USER_ENTERED",
+                data
+            }
         }, function(error, response){
             if (error){reject(error);}
             resolve(response);
