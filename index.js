@@ -15,7 +15,7 @@ var sheets = google.sheets({
 function updateSurveyData(sheets, spreadsheetId, data, options){
     options = options || {};
     return new Promise(function(resolve, reject){
-        sheets.values.batchUpdate({
+        sheets.batchUpdate({
             spreadsheetId,
             data,
             valueInputOption: options.valueInputOption || "USER_ENTERED",
