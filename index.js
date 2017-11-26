@@ -1,12 +1,12 @@
 var google = require("googleapis");
 
-function modifySheets(emailVariable, privateKeyVariable){
+function _sheets(clientEmail, privateKey){
     return google.sheets({
         version: "v4",
         auth: new google.auth.JWT(
-            process.env[emailVariable || "SHEETS_CLIENT_EMAIL"],
+            clientEmail,
             null,
-            process.env[privateKeyVariable || "SHEETS_PRIVATE_KEY"].replace(/\\n/g, "\n"),
+            privateKey,
             ["https://www.googleapis.com/auth/spreadsheets"],
             null
         )
@@ -18,7 +18,7 @@ function updateRows(data, options){
         if (!data || !data.length){reject("Need data")}
         if (!options || !options.spreadsheetId){reject("Need valid spreadsheetId")}
 
-        modifySheets(options.emailVariable, options.privateKeyVariable).batchUpdate({
+        _sheets(options.clientEmail, options.privateKey).batchUpdate({
             spreadsheetId: options.spreadsheetId,
             resource: {
                 valueInputOption: options.valueInputOption || "USER_ENTERED",
@@ -38,7 +38,7 @@ function addRows(range, data, options){
         if (!data || !data.length){reject("Need data")}
         if (!options || !options.spreadsheetId){reject("Need valid spreadsheetId")}
 
-        modifySheets(options.emailVariable, options.privateKeyVariable).append({
+        _sheets(options.clientEmail, options.privateKey).append({
             spreadsheetId: options.spreadsheetId,
             range,
             valueInputOption: options.valueInputOption || "USER_ENTERED",
@@ -55,7 +55,7 @@ function addRows(range, data, options){
 }
 
 module.exports = {
-    modifySheets,
+    _sheets,
     updateRows,
     addRows
 };

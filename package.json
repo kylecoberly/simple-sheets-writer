@@ -1,6 +1,6 @@
 {
     "name": "simple-sheets-writer",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "description": "Provides a simple, promise-based API for writing Google Sheets data.",
     "main": "index.js",
     "scripts": {
@@ -20,7 +20,6 @@
         "url": "https://github.com/kylecoberly/simple-sheets-writer.git"
     },
     "dependencies": {
-        "dotenv": "^4.0.0",
         "googleapis": "^16.1.0"
     },
     "devDependencies": {

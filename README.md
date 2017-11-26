@@ -2,7 +2,7 @@
 
 Writes Google Sheets data, perfect for sheets populated by Google Forms. This is a wrapper for the very powerful-yet-overwhelming official Sheets API.
 
-Authenticates via JWTs and a [Google Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) by looking for the presence of a `SHEETS_CLIENT_EMAIL` environment variable and a private key environment variable named `SHEETS_PRIVATE_KEY`. See `.env.example` for an example. These will have to be copied from the `.json` file that Google Service Accounts generate.
+Authenticates with a [Google Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) generated client email and a private key. These will have to be copied from the `.json` file that Google Service Accounts generate. See [service-account-credentials.json](service-account-credentials.json) for an example.
 
 ## API
 
@@ -28,7 +28,13 @@ updateRows(data, options).then();
 * `privateKeyVariable`: The environment variable containing your private key for the service account
 * `valueInputOption`: Whether input should be taken literally (`"RAW"`), or as if a user entered them (`"USER_ENTERED"`, default)
 
-It returns a count of modified rows.
+It returns a count of modified rows:
+
+```js
+{
+    updatedRows: 1
+}
+```
 
 `addRows` has the following parameters:
 
@@ -54,7 +60,13 @@ addRows(range, data, options);
 * `privateKeyVariable`: The environment variable containing your private key for the service account
 * `valueInputOption`: Whether input should be taken literally (`"RAW"`), or as if a user entered them (`"USER_ENTERED"`, default)
 
-It returns a count of modified rows.
+It returns an object with the count of modified rows:
+
+```js
+{
+    updatedRows: 1
+}
+```
 
 ## Usage
 
@@ -71,7 +83,7 @@ updateRows([{
     spreadsheetId: "9wLECuzvVpx8z7Ux5_9if_wdTDwhxXRcJZpJ-xhVeJRs",
     emailVariable: "SHEETS_CLIENT_EMAIL", // Default value
     privateKeyVariable: "SHEETS_PRIVATE_KEY", // Default value
-}).then(console.log)
+}).then(console.log) // {updatedRows: 4}
 .catch(console.error);
 
 addRows("'Form Responses'!A2:B", [
@@ -81,7 +93,18 @@ addRows("'Form Responses'!A2:B", [
     spreadsheetId: "9wLECuzvVpx8z7Ux5_9if_wdTDwhxXRcJZpJ-xhVeJRs",
     emailVariable: "SHEETS_CLIENT_EMAIL", // Default value
     privateKeyVariable: "SHEETS_PRIVATE_KEY", // Default value
-}).then(console.log)
+}).then(console.log) // {updatedRows: 2}
 .catch(console.error);
+```
+
+---
 
 Look at the [Google Sheets `batchUpdate` API Docs](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchGet) and the [Google Sheets `append` API Docs](ihttps://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append) for more information.
+
+## Tests
+
+`npm test`
+
+## Upgrading to 2.0
+
+* Credentials need to be passed in, rather than read from the environment
