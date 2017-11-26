@@ -42,7 +42,7 @@ function addRows(range, data, options){
             spreadsheetId: options.spreadsheetId,
             range,
             valueInputOption: options.valueInputOption || "USER_ENTERED",
-            insertDataOption: "INSERT_DATA",
+            insertDataOption: "INSERT_ROWS",
             resource: {
                 values: data
             }
