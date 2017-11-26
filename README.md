@@ -1,5 +1,7 @@
 # Simple Sheets Writer
 
+*This package is deprecated in favor of [`simple-sheets`](https://www.npmjs.com/package/simple-sheets), which combines this with the `simple-sheets-reader` API*
+
 Writes Google Sheets data, perfect for sheets populated by Google Forms. This is a wrapper for the very powerful-yet-overwhelming official Sheets API.
 
 Authenticates via a [Google Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) by passing in the `client_email` and `private_key` values provided by the `.json` file that Google Service Accounts generate. See [service-account-credentials.json](service-account-credentials.json) for an example.
@@ -84,8 +86,8 @@ updateRows([{
     values: [["C", "D"], ["E", "F"]]
 }], {
     spreadsheetId: "9wLECuzvVpx8z7Ux5_9if_wdTDwhxXRcJZpJ-xhVeJRs",
-    emailVariable: "SHEETS_CLIENT_EMAIL", // Default value
-    privateKeyVariable: "SHEETS_PRIVATE_KEY", // Default value
+    clientEmail: "test-account@fast-ability-145401.iam.gserviceaccount.com",
+    privateKey: PRIVATE_KEY
 }).then(console.log) // {updatedRows: 4}
 .catch(console.error);
 
@@ -94,8 +96,8 @@ addRows("'Form Responses'!A2:B", [
     ["column 1", "column 2"]
 ], {
     spreadsheetId: "9wLECuzvVpx8z7Ux5_9if_wdTDwhxXRcJZpJ-xhVeJRs",
-    emailVariable: "SHEETS_CLIENT_EMAIL", // Default value
-    privateKeyVariable: "SHEETS_PRIVATE_KEY", // Default value
+    clientEmail: "test-account@fast-ability-145401.iam.gserviceaccount.com",
+    privateKey: PRIVATE_KEY
 }).then(console.log) // {updatedRows: 2}
 .catch(console.error);
 ```

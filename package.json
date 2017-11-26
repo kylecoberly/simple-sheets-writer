@@ -1,6 +1,6 @@
 {
     "name": "simple-sheets-writer",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Provides a simple, promise-based API for writing Google Sheets data.",
     "main": "index.js",
     "scripts": {
