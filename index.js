@@ -28,7 +28,7 @@ function updateRows(data, options){
             if (error){reject(error);}
             resolve(response);
         });
-    }).then(response => response.totalUpdatedRows)
+    }).then(response => ({updatedRows: response.totalUpdatedRows}))
     .catch(console.error);
 }
 
@@ -42,7 +42,7 @@ function addRows(range, data, options){
             spreadsheetId: options.spreadsheetId,
             range,
             valueInputOption: options.valueInputOption || "USER_ENTERED",
-            insertDataOption: "",
+            insertDataOption: "INSERT_DATA",
             resource: {
                 values: data
             }
@@ -50,7 +50,7 @@ function addRows(range, data, options){
             if (error){reject(error)}
             resolve(response);
         });
-    }).then(response => response.updates.updatedRows)
+    }).then(response => ({updatedRows: response.updates.updatedRows}))
     .catch(console.error);
 }
 
