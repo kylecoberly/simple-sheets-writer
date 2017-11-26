@@ -2,11 +2,11 @@
 
 Writes Google Sheets data, perfect for sheets populated by Google Forms. This is a wrapper for the very powerful-yet-overwhelming official Sheets API.
 
-Authenticates with a [Google Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) generated client email and a private key. These will have to be copied from the `.json` file that Google Service Accounts generate. See [service-account-credentials.json](service-account-credentials.json) for an example.
+Authenticates via a [Google Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) by passing in the `client_email` and `private_key` values provided by the `.json` file that Google Service Accounts generate. See [service-account-credentials.json](service-account-credentials.json) for an example.
 
 ## API
 
-`simple-sheets-writer` exports an object with two functions, `updateRows` and `addRows`. `updateRows` has the following parameters:
+`simple-sheets-writer` exports an object with two functions, `updateRows` and `addRows`. `updateRows` takes the following arguments:
 
 ```js
 updateRows(data, options).then();
@@ -17,15 +17,18 @@ updateRows(data, options).then();
 ```js
 [{
     range: "A2:A",
-    values: [["A"], ["B"]]
+    values: [
+        ["A"],
+        ["B"]
+    ]
 }]
 ```
 
 `options` include:
 
 * `spreadsheetId` (required): The ID of the Google sheet, which is the long string in the URL of the page
-* `emailVariable`: The environment variable containing your authorized email (remember to add permissions for this email to your sheet!)
-* `privateKeyVariable`: The environment variable containing your private key for the service account
+* `clientEmail` (required): The authorized `client_email` for your service account (remember to add permissions for this email to your sheet!)
+* `privateKey` (required): the authorized `private_key` for your service account
 * `valueInputOption`: Whether input should be taken literally (`"RAW"`), or as if a user entered them (`"USER_ENTERED"`, default)
 
 It returns a count of modified rows:
@@ -56,8 +59,8 @@ addRows(range, data, options);
 `options` include:
 
 * `spreadsheetId` (required): The ID of the Google sheet, which is the long string in the URL of the page
-* `emailVariable`: The environment variable containing your authorized email (remember to add permissions for this email to your sheet!)
-* `privateKeyVariable`: The environment variable containing your private key for the service account
+* `clientEmail` (required): The authorized `client_email` for your service account (remember to add permissions for this email to your sheet!)
+* `privateKey` (required): the authorized `private_key` for your service account
 * `valueInputOption`: Whether input should be taken literally (`"RAW"`), or as if a user entered them (`"USER_ENTERED"`, default)
 
 It returns an object with the count of modified rows:
