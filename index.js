@@ -1,31 +1,61 @@
-require("dotenv").load();
-
 var google = require("googleapis");
-var sheets = google.sheets({
-    version: "v4",
-    auth: new google.auth.JWT(
-        process.env.SHEETS_CLIENT_EMAIL,
-        null,
-        process.env.SHEETS_PRIVATE_KEY.replace(/\\n/g, "\n"),
-        ["https://www.googleapis.com/auth/spreadsheets"],
-        null
-    )
-}).spreadsheets;
 
-function updateSurveyData(sheets, spreadsheetId, data, options){
-    options = options || {};
-    return new Promise(function(resolve, reject){
-        sheets.values.batchUpdate({
-            spreadsheetId,
+function modifySheets(emailVariable, privateKeyVariable){
+    return google.sheets({
+        version: "v4",
+        auth: new google.auth.JWT(
+            process.env[emailVariable || "SHEETS_CLIENT_EMAIL"],
+            null,
+            process.env[privateKeyVariable || "SHEETS_PRIVATE_KEY"].replace(/\\n/g, "\n"),
+            ["https://www.googleapis.com/auth/spreadsheets"],
+            null
+        )
+    }).spreadsheets.values;
+}
+
+function updateRows(data, options){
+    return new Promise((resolve, reject) => {
+        if (!data || !data.length){reject("Need data")}
+        if (!options || !options.spreadsheetId){reject("Need valid spreadsheetId")}
+
+        modifySheets(options.emailVariable, options.privateKeyVariable).batchUpdate({
+            spreadsheetId: options.spreadsheetId,
             resource: {
                 valueInputOption: options.valueInputOption || "USER_ENTERED",
                 data
             }
-        }, function(error, response){
+        }, (error, response) => {
             if (error){reject(error);}
             resolve(response);
         });
-    });
+    }).then(response => response.totalUpdatedRows)
+    .catch(console.error);
 }
 
-module.exports = updateSurveyData.bind(null, sheets);
+function addRows(range, data, options){
+    return new Promise((resolve, reject) => {
+        if (!range){reject("Need range")}
+        if (!data || !data.length){reject("Need data")}
+        if (!options || !options.spreadsheetId){reject("Need valid spreadsheetId")}
+
+        modifySheets(options.emailVariable, options.privateKeyVariable).append({
+            spreadsheetId: options.spreadsheetId,
+            range,
+            valueInputOption: options.valueInputOption || "USER_ENTERED",
+            insertDataOption: "",
+            resource: {
+                values: data
+            }
+        }, (error, response) => {
+            if (error){reject(error)}
+            resolve(response);
+        });
+    }).then(response => response.updates.updatedRows)
+    .catch(console.error);
+}
+
+module.exports = {
+    modifySheets,
+    updateRows,
+    addRows
+};
